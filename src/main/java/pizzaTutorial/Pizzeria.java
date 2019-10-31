@@ -50,9 +50,166 @@ public class Pizzeria extends AbstractPizzeria {
 
 
 		//TODO: Your code goes here...
+		HashSet<OWLClass> allClasses = new HashSet<OWLClass>();
+		
+		OWLClass pizza = createOWLClass("Pizza");
+		OWLClass pizzaTopping = createOWLClass("PizzaTopping");
+		OWLClass pizzaBase = createOWLClass("PizzaBase");
 
+		allClasses.add(pizza);
+		allClasses.add(pizzaTopping);
+		allClasses.add(pizzaBase);
+		
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass namedPizza = createOWLClass("NamedPizza", pizza);
+		OWLClass cheesyPizza = createOWLClass("CheesyPizza", pizza);
+		OWLClass vegetablePizza = createOWLClass("VegetablePizza", pizza);
+//		allClasses.add(namedPizza);
+//		allClasses.add(cheesyPizza);
+//		allClasses.add(vegetablePizza);
+//		makeClassesDisjoint(allClasses);
+//		allClasses.clear();
+		
+		OWLClass margheritaPizza = createOWLClass("MargheritaPizza", namedPizza);
+		OWLClass hotAmericanPizza = createOWLClass("HotAmericanPizza", namedPizza);
+		allClasses.add(margheritaPizza);
+		allClasses.add(hotAmericanPizza);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
 
+		OWLClass americanPizza = createOWLClass("AmericanPizza", margheritaPizza);
+		OWLClass sohoPizza = createOWLClass("SohoPizza", margheritaPizza);
+		allClasses.add(americanPizza);
+		allClasses.add(sohoPizza);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
 
+		OWLClass cheeseTopping = createOWLClass("CheeseTopping", pizzaTopping);
+		OWLClass meatToppinig = createOWLClass("MeatTopping", pizzaTopping);
+		OWLClass vegetableTopping = createOWLClass("VegetableTopping", pizzaTopping);
+		OWLClass seafoodTopping = createOWLClass("SeafoodTopping", pizzaTopping);
+		allClasses.add(cheeseTopping);
+		allClasses.add(meatToppinig);
+		allClasses.add(vegetableTopping);
+		allClasses.add(seafoodTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass pepperoniTopping = createOWLClass("PepperoniTopping", meatToppinig);
+		OWLClass spicyBeefTopping = createOWLClass("SpicyBeefTopping", meatToppinig);
+		OWLClass salamiTopping = createOWLClass("SalamiTopping", meatToppinig);
+		OWLClass hamTopping = createOWLClass("HamTopping", meatToppinig);
+		allClasses.add(pepperoniTopping);
+		allClasses.add(spicyBeefTopping);
+		allClasses.add(salamiTopping);
+		allClasses.add(hamTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass tomatoTopping = createOWLClass("TomatoTopping", vegetableTopping);
+		OWLClass jalapenoPepperTopping = createOWLClass("JalapenoPepperTopping", vegetableTopping);
+		OWLClass oliveTopping = createOWLClass("OliveTopping", vegetableTopping);
+		OWLClass mushroomTopping = createOWLClass("MushroomTopping", vegetableTopping);
+		OWLClass onionTopping = createOWLClass("OnionTopping", vegetableTopping);
+		OWLClass caperTopping = createOWLClass("CaperTopping", vegetableTopping);
+		OWLClass pepperTopping = createOWLClass("PepperTopping", vegetableTopping);
+		allClasses.add(tomatoTopping);
+		allClasses.add(jalapenoPepperTopping);
+		allClasses.add(oliveTopping);
+		allClasses.add(mushroomTopping);
+		allClasses.add(onionTopping);
+		allClasses.add(caperTopping);
+		allClasses.add(pepperTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass redPepperTopping = createOWLClass("RedPepperTopping", pepperTopping);
+		OWLClass greenPepperTopping = createOWLClass("GreenPepperTopping", pepperTopping);
+		allClasses.add(redPepperTopping);
+		allClasses.add(greenPepperTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass mozzarellaTopping = createOWLClass("MozzarellaTopping", cheeseTopping);
+		OWLClass parmezanTopping = createOWLClass("ParmezanTopping", cheeseTopping);
+		allClasses.add(mozzarellaTopping);
+		allClasses.add(parmezanTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		
+		OWLClass tunaTopping = createOWLClass("TunaTopping", seafoodTopping);
+		OWLClass anchovyTopping = createOWLClass("AnchovyTopping", seafoodTopping);
+		OWLClass prawnTopping = createOWLClass("PrawnTopping", seafoodTopping);
+		allClasses.add(tunaTopping);
+		allClasses.add(anchovyTopping);
+		allClasses.add(prawnTopping);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLClass thinAndCrispyBase = createOWLClass("ThinAndCrispyBase", pizzaBase);
+		OWLClass deepPanBase = createOWLClass("DeepPanBase", pizzaBase);
+		allClasses.add(thinAndCrispyBase);
+		allClasses.add(deepPanBase);
+		makeClassesDisjoint(allClasses);
+		allClasses.clear();
+		
+		OWLObjectProperty hasIngredient = createObjProperty("hasIngredient");
+		makeObjPropertyTransitive(hasIngredient);
+
+		OWLObjectProperty hasTopping = createObjProperty("hasTopping", hasIngredient);
+		createObjectPropertyDomain(hasTopping, pizza);
+		createObjectPropertyRange(hasTopping, pizzaTopping);
+		
+		
+		OWLObjectProperty isIngredientOf = createObjProperty("isIngredientOf");
+		makeObjPropertiesInverse(hasIngredient, isIngredientOf);
+		
+		OWLObjectProperty isToppingOf = createObjProperty("isToppingOf", isIngredientOf);
+		createObjectPropertyDomain(isToppingOf, pizzaTopping);
+		createObjectPropertyRange(isToppingOf, pizza);
+		makeObjPropertiesInverse(hasTopping, isToppingOf);
+		
+		OWLObjectProperty hasBase = createObjProperty("hasBase", hasIngredient);
+		makeObjPropertyFunctional(hasBase);
+		createObjectPropertyDomain(hasBase, pizza);
+		createObjectPropertyRange(hasBase, pizzaBase);
+		
+	
+		OWLObjectProperty isBaseOf = createObjProperty("isBaseOf", isIngredientOf);
+		createObjectPropertyRange(isBaseOf, pizza);
+		createObjectPropertyDomain(isBaseOf, pizzaBase);
+		makeObjPropertiesInverse(hasBase, isBaseOf);
+		
+		createObjectSomeValuesFromRestriction(margheritaPizza, hasTopping, tomatoTopping);
+		createObjectSomeValuesFromRestriction(margheritaPizza, hasTopping, mozzarellaTopping);
+		
+		createObjectSomeValuesFromRestriction(hotAmericanPizza, hasTopping, tomatoTopping);
+		createObjectSomeValuesFromRestriction(hotAmericanPizza, hasTopping, mozzarellaTopping);
+		createObjectSomeValuesFromRestriction(hotAmericanPizza, hasTopping, pepperoniTopping);
+		createObjectSomeValuesFromRestriction(hotAmericanPizza, hasTopping, jalapenoPepperTopping);
+		
+		createObjectSomeValuesFromRestriction(pizza, hasBase, pizzaBase);
+
+		createObjectSomeValuesFromRestriction(americanPizza, hasTopping, salamiTopping);
+		createObjectSomeValuesFromRestriction(sohoPizza, hasTopping, oliveTopping);
+		createObjectSomeValuesFromRestriction(sohoPizza, hasTopping, parmezanTopping);
+		
+		createObjectSomeValuesFromRestriction(cheesyPizza, hasTopping, cheeseTopping);
+		
+		OWLObjectUnionOf ouo = df.getOWLObjectUnionOf(tomatoTopping, mozzarellaTopping);
+		
+		HashSet<OWLClass> classes = new HashSet<OWLClass>();
+		classes.add(tomatoTopping);
+		classes.add(mozzarellaTopping);
+		createObjectAllValuesFromRestriction(vegetablePizza, hasTopping, classes);
+		
+		convertToDefinedClass(cheesyPizza);
+		convertToDefinedClass(vegetablePizza);
+		
+		
 		file = new File("src/main/resources/pizzaOntology.owl");
 		try {
 			ontoManager.saveOntology(ontology, new OWLXMLOntologyFormat(), IRI.create(file));
@@ -82,6 +239,7 @@ public class Pizzeria extends AbstractPizzeria {
 			System.out.println("There are no unsatisfiable classes");
 		}
 	}
+
 
 	@Override
 	OWLClass createOWLClass(String name) {
@@ -139,6 +297,21 @@ public class Pizzeria extends AbstractPizzeria {
 
 		ontoManager.addAxiom(ontology, df.getOWLFunctionalObjectPropertyAxiom(objProperty));
 	}
+	
+	private void createObjectAllValuesFromRestriction(OWLClass subClass, OWLObjectProperty objProperty,
+			OWLObjectUnionOf ouo) {
+		OWLClassExpression anonymousClass = df.getOWLObjectAllValuesFrom(objProperty, ouo);
+		OWLSubClassOfAxiom sub = df.getOWLSubClassOfAxiom(subClass, anonymousClass);
+		ontoManager.addAxiom(ontology, sub);
+	}
+
+	void createObjectAllValuesFromRestriction(OWLClass subClass, OWLObjectProperty objProperty, Set<OWLClass> classes) {
+		OWLObjectUnionOf ouo = df.getOWLObjectUnionOf(classes);
+		OWLClassExpression anonymousClass = df.getOWLObjectAllValuesFrom(objProperty, ouo);
+		OWLSubClassOfAxiom sub = df.getOWLSubClassOfAxiom(subClass, anonymousClass);
+		ontoManager.addAxiom(ontology, sub);
+	}
+
 
 	@Override
 	void createObjectSomeValuesFromRestriction(OWLClass subClass, OWLObjectProperty objProperty, HashSet<OWLClassExpression> fillers) {
